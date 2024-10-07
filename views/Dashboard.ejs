@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TODO Dashboard</title>
+  <link rel="stylesheet" href="/app.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="bg-black min-h-screen flex justify-center relative">
+
+  <!-- Dropdown positioned in the top-right -->
+  <div class="absolute top-2 right-0 w-72 select-none">
+    <div class="flex justify-end items-center w-48 cursor-pointer" id="dropdownButton">
+      <i class="fa-solid fa-bars text-gray-100 text-xl px-4 py-2 absolute top-2 right-4 rounded-lg hover:bg-gray-100 hover:text-gray-600"></i>
+    </div>
+
+    <ul id="dropdownMenu" class="absolute top-10 right-4 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg hidden w-10">
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
+        <div class="w-full flex justify-between items-center text-left">
+          <img src="https://i.imgur.com/37OLBtw.png" alt="user" class="w-12 h-12 rounded-full object-cover border border-gray-300 opacity-60">
+          <div>
+            <p id='user' class="w-full flex justify-between items-center text-left text-lg text-gray-700 font-bold"></p>
+            <p id='email' class="w-full flex justify-between items-center text-left text-sm text-blue-500"></p>
+          </div>
+
+        </div>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
+        <div class="w-full">
+          <button id='logout' class="w-full flex justify-between items-center text-left" id="logout">Logout <i class="fa-solid fa-arrow-right-from-bracket text-gray-600"></i></button>
+        </div>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
+        <div id='logoutAll' class="w-full">
+          <button id="logoutAll" class="w-full flex justify-between items-center text-left"> Logout From All Devices <i class="fa-solid fa-power-off text-red-600"></i></button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container mx-auto max-h-screen px-4 w-5/12 bg-white rounded-lg shadow-lg">
+    <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-pink-500 to-blue-200 bg-clip-text text-transparent tracking-tight relative">
+      YOUR TODOs!
+      <span class="absolute w-2/6 mx-auto inset-x-0 -bottom-1 h-1 bg-gradient-to-r from-blue-200 via-pink-300 via-pink-300 to-blue-200"></span>
+    </h1>
+
+    <div class="input-container position sticky top-0 flex items-center mb-6 bg-gray-100 px-4 py-2 rounded-lg">
+      <input type="text" name="newTodo" id="taskName" placeholder="Enter Task" class="w-full px-4 py-2 border border-gray-300 
+      rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+      <button id="addTask" class="bg-blue-500 text-white px-3 text-sm font-medium rounded-lg hover:bg-blue-600 
+      focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out">Add Task</button>
+    </div>
+
+    <ul id="taskList" class="space-y-4">
+      <!-- Example task (remove once dynamic tasks are added) -->
+      <!-- <li class="flex justify-between items-center bg-gray-100 px-4 py-3 rounded-lg shadow-md select-none">
+        <span class="text-gray-700 select-text">Sample Task</span>
+        <div class="flex items-center">
+          <button class="text-blue-500 hover:text-blue-700 transition duration-200 ease-in-out cursor-pointer select-none"><i class="fa-solid fa-pen-to-square edit"></i></button>
+          <button class="text-blue-500 mx-5 hover:text-blue-700 transition duration-200 ease-in-out cursor-pointer select-none"><input class="done" type="checkbox" class="w-4 h-4 mt-2"></button>
+          <button class="text-red-500 hover:text-red-700 transition duration-200 ease-in-out cursor-pointer select-none"><i class="fa-solid fa-trash delete"></i></button>
+        </div>
+      </li> -->
+    </ul>
+    <div class="flex max-w-72 justify-center items-center mt-6">
+      <button id="Prve" class="bg-blue-500 mr-1 text-white px-2 py-1 text-sm font-medium rounded-full 
+      hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out select-none cursor-pointer">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+
+      <div id="Page" class="flex max-w-52 items-center gap-2 text-gray-500 overflow-x-auto"></div>
+
+      <bouuto id="Next" class="bg-blue-500 text-white px-2 py-1 text-sm font-medium rounded-full 
+      hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out select-none cursor-pointer">
+        <i class="fa-solid fa-arrow-right"></i>
+      </bouuto>
+    </div>
+  </div>
+
+  <!-- Script to toggle dropdown -->
+  <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+  <script src="/browser.js">
+
+  </script>
+</body>
+
+</html>

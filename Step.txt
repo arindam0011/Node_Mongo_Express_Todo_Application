@@ -1,0 +1,49 @@
+Todo
+
+SRS (Software requiredment Spacification), DFD (Data Flow Diagram), API (Application Programming Interface), Client.
+
+
+
+1. Project Setup            (Done)!
+2. Express Setup            (Done)!
+3. MongoDM Connection       (Done)!
+
+4. Setup MVC (Model View Controller) => EJS (Embedded JavaScript)        (Done)!
+
+// Authentication 
+
+5. Registration Page        (Done)!
+6. Login Page               (Done)!
+
+7. Register API         (Done)!
+8. Login API            (Done)!
+
+9. Sassion base Authentication              (Done)!`
+10. Middlieware for protecting API's        (Done)!
+
+11. Dashboard Page         (Done)!
+
+12. Logout API                      (Done)!
+13. Logout From All devices         (Done)!
+
+
+// Todo API's
+
+14. Create Todo           (Done)!
+15. Get/Read Todo         (Done)!
+16. Update/Edit Todo      (Done)!
+17. Delete Todo           (Done)!
+
+// Dashboard Client (Axios)
+
+18. Axios Create API          (Done)!
+19. Axios Read/Get API        (Done)!
+20. Axios Update/Edit API     (Done)!
+21. Axios Delete API          (Done)!
+
+// Optimize Server
+22. Pazination of API's Page 1|2|3|4|5
+23. Rate Limiting
+24. Deployment
+
+25. Email base Authentication (JWT)

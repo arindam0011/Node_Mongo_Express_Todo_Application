@@ -1,0 +1,6 @@
+.container::-webkit-scrollbar{
+    display: none;
+}
+#Page::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
