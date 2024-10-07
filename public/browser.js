@@ -70,6 +70,7 @@ document.addEventListener('click', function (e) {
                     alert('Todo deleted!');
                 }
                 e.target.parentElement.parentElement.parentElement.remove();
+                getAndRenderAllTodos();
             })
             .catch((err) => {
                 alert(err.message);
