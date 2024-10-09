@@ -5,6 +5,10 @@ const app = express();
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
+const formidable = require("formidable");
+const fs = require("fs");
+const path = require("path");
+const { v4: uuidv4 } = require('uuid')
 
 const store = new MongoDBStore({
     uri: process.env.MONGO_URL,
@@ -16,8 +20,10 @@ const UserModel = require("./models/userModel");
 const sessionModel = require("./models/sessionModel");
 const todoModel = require("./models/todoModel");
 const { userDataValidation, validateEmail } = require("./utill/userDataValidation");
+const userDPModel = require("./models/userDPModel");
 const { isUserAuth } = require("./middlewares/isAuthMiddleware");
 const { todoValidation } = require("./utill/todoValidation")
+const cloudinary = require("cloudinary").v2;
 
 // middleware
 app.use(express.json());
@@ -40,7 +46,12 @@ mongoose.connect(process.env.MONGO_URL)
         console.log("Error connecting to MongoDB:", error);
     });
 
-
+//cloudinary configuration
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // constants
 
@@ -183,7 +194,6 @@ app.post("/logoutAll", isUserAuth, async (req, res) => {
 
     try {
         const dltDB = await sessionModel.deleteMany({ "session.user.username": req.session.user.username });
-        console.log(dltDB);
         return res.redirect("/login");
     } catch (err) {
         return res.status(500).json(err);
@@ -197,7 +207,7 @@ app.post('/create-todo', isUserAuth, async (req, res) => {
     const todo = req.body.newTodo;
 
     try {
-        await todoValidation({ todo: newTodo});
+        await todoValidation({ todo: newTodo });
 
     } catch (err) {
         return res.send({
@@ -234,7 +244,7 @@ app.get('/get-todo', isUserAuth, async (req, res) => {
     const username = req.session.user.username;
     const SKIP = Number(req.query.skip) || 0;
     const Limit = 7;
-    
+
     try {
         //1) const todolist = await todoModel.find({ userName: username });
         //2) const todolist = await todoModel.aggregate([
@@ -244,16 +254,16 @@ app.get('/get-todo', isUserAuth, async (req, res) => {
         // ])
         //3)(most resent first using non aggregation) 
         // const todolist = await todoModel.find({ userName: username }).sort({ createdAt: -1 }).limit(Limit).skip(SKIP);   
-        
+
         //4) (most resent first using aggregation) 
         const todolist = await todoModel.aggregate([
-            {$match : { userName: username }},
-            {$sort: {createdAt: -1}},
-            {$skip: SKIP},
-            {$limit: Limit},
+            { $match: { userName: username } },
+            { $sort: { createdAt: -1 } },
+            { $skip: SKIP },
+            { $limit: Limit },
         ])
-        console.log(todolist.length);
-       if (!todolist || todolist.length === 0) {
+
+        if (!todolist || todolist.length === 0) {
             return res.send({
                 status: 204,
                 message: "No Todo Found",
@@ -280,7 +290,7 @@ app.post('/edit-todo', isUserAuth, async (req, res) => {
     const newTodo = req.body.newTodo;
     const todoStatusValue = req.body.todoStatusValue;
     const username = req.session.user.username;
-   
+
     try {
         await todoValidation({ todo: newTodo });
     } catch (error) {
@@ -291,15 +301,15 @@ app.post('/edit-todo', isUserAuth, async (req, res) => {
     }
     try {
         // Ownership check 
-        const userCheckDB = await todoModel.findOne({ _id: todoId});
-        if(userCheckDB.userName !== username){
+        const userCheckDB = await todoModel.findOne({ _id: todoId });
+        if (userCheckDB.userName !== username) {
             return res.send({
                 status: 403,
                 message: "You are not allowed to update this todo",
             })
         }
 
-      // Update
+        // Update
         let todoDB = await todoModel.findOneAndUpdate({ _id: todoId }, { todo: newTodo, currentStatus: todoStatusValue }, { new: true });
         return res.send({
             status: 200,
@@ -311,7 +321,7 @@ app.post('/edit-todo', isUserAuth, async (req, res) => {
             status: 500,
             message: 'Iternal Server Error',
             error: error
-        }) 
+        })
     }
 })
 
@@ -321,8 +331,8 @@ app.post('/delete-todo', isUserAuth, async (req, res) => {
     const username = req.session.user.username;
     try {
         // Ownership check 
-        const userCheckDB = await todoModel.findOne({ _id: todoId});
-        if(userCheckDB.userName !== username){
+        const userCheckDB = await todoModel.findOne({ _id: todoId });
+        if (userCheckDB.userName !== username) {
             return res.send({
                 status: 403,
                 message: "You are not allowed to delete this todo",
@@ -332,12 +342,12 @@ app.post('/delete-todo', isUserAuth, async (req, res) => {
 
         // Delete
         const todoDB = await todoModel.findByIdAndDelete({ _id: todoId });
-        return res.send({  
+        return res.send({
             status: 200,
             message: "Todo Deleted",
         })
 
-    } catch (error) {   
+    } catch (error) {
         return res.send({
             status: 500,
             message: 'Iternal Server Error',
@@ -371,16 +381,16 @@ app.get('/total-todo-count', isUserAuth, async (req, res) => {
     }
 })
 
-app.get('/get-user', isUserAuth, async(req, res) => {
+app.get('/get-user', isUserAuth, async (req, res) => {
     const username = req.session.user.username;
-    try{
+    try {
         const userDB = await UserModel.findOne({ username: username });
         return res.send({
             status: 200,
             message: "User Found",
             data: userDB
         })
-    }catch(error){
+    } catch (error) {
         return res.send({
             status: 500,
             message: 'Iternal Server Error',
@@ -388,7 +398,78 @@ app.get('/get-user', isUserAuth, async(req, res) => {
         })
     }
 })
+
+app.post('/uploadDP', isUserAuth, (req, res) => {
+    const username = req.session.user.username;
+
+    const form = new formidable.IncomingForm();
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return res.status(400).json({ status: 400, message: "Error parsing the form." });
+        }
+
+        const file = files.profilePic[0];
     
+        // Check if a file is uploaded and its MIME type
+        if (!file || !file.filepath) {
+            return res.status(400).json({ status: 400, message: "No file uploaded." });
+        }
+
+        const validMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validMimeTypes.includes(file.mimetype)) {
+            return res.status(400).json({ status: 400, message: "Only image files are allowed." });
+        }
+
+        const Path = file.filepath;
+        const public_id = uuidv4();
+
+        try {
+            const result = await cloudinary.uploader.upload(Path, {
+                folder: "Profile",
+                public_id: public_id,
+            });
+
+            const userDB = await userDPModel.findOneAndUpdate(
+                { username: username },
+                { img: result.secure_url },
+                { new: true, upsert: true, useFindAndModify: false }
+            );
+
+            if (!userDB) {
+                fs.unlinkSync(Path);
+            }
+            return res.status(200).send({
+                status: 200,
+                message: "Profile picture uploaded successfully.",
+                data: userDB
+            });
+        } catch (error) {
+            return res.status(500).send({
+                status: 500,
+                message: 'Internal Server Error',
+                error: error.message || 'An error occurred while uploading the profile picture.'
+            });
+        }
+    });
+});
+
+app.get('/get-userDP', isUserAuth, async (req, res) => {
+    const username = req.session.user.username;
+    try {
+        const userDB = await userDPModel.findOne({ username: username });
+        return res.send({
+            status: 200,
+            message: "User Found",
+            data: userDB
+        })
+    } catch (error) {
+        return res.send({
+            status: 500,
+            message: 'Iternal Server Error',
+            error: error
+        })
+    }
+})
 
 
 app.listen(Port, () => {

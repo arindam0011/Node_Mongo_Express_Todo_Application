@@ -4,6 +4,7 @@ document.getElementById('dropdownButton').addEventListener('click', function (e)
     e.target.style.color = 'black';
     const menu = document.getElementById('dropdownMenu');
     menu.classList.toggle('hidden');
+    getDP();
 });
 
 const taskList = document.getElementById('taskList');
@@ -50,7 +51,22 @@ function getAndRenderAllTodos() {
         });
 }
 
+function getDP() {
+    axios
+    .get('/get-userDP')
+    .then((res) => {
+        if (res.status === 200) {
+           const img = res.data.data.img;
 
+           const DP = document.getElementById('DP');
+           DP.src = img || 'https://i.imgur.com/37OLBtw.png';
+        }
+    })
+    .catch((err) => {
+        console.log(err);
+        alert('Internal Server Error!');
+    });
+}
 
 window.onload = getAndRenderAllTodos;
 
@@ -143,23 +159,6 @@ document.addEventListener('click', function (e) {
             return;
         }
 
-        // let newtask = document.createElement('li');
-        // newtask.classList.add('flex', 'justify-between', 'items-center', 'bg-gray-100', 'px-4', 'py-3', 'rounded-lg', 'shadow-md', 'select-none');
-        // newtask.innerHTML = `
-        //                 <span class="todo-text w-3/6 px-2 py-1 text-gray-700 select-text">${task.value}</span>
-        //                 <div class="btn-container flex items-center select-none w-52">
-        //                     <label for="${task.value}" class="mx-2 text-sm">Status:</label>
-        //                     <select class="status-dropdown mr-1 text-gray-700 text-sm bg-gray-100 w-24">
-        //                         <option>Not Done!</option>
-        //                         <option>In Progress!</option>
-        //                         <option>Done!</option>
-        //                     </select>
-        //                     <button class="text-blue-500 mx-2 hover:text-blue-700 transition duration-200 ease-in-out cursor-pointer select-none"><i class="fa-solid fa-pen-to-square edit btn-edit"></i></button>
-        //                     <button class="text-red-500 hover:text-red-700 transition duration-200 ease-in-out cursor-pointer select-none"><i class="fa-solid fa-trash delete btn-delete"></i></button>
-        //                 </div>
-        //                 `;
-
-        // taskList.prepend(newtask);
         loadPages = true;
 
         axios
@@ -199,7 +198,7 @@ document.addEventListener('click', function (e) {
             })
     }
     else if (e.target.id === 'Prve') {
-       
+
         const newLength = todoList && todoList.length < LIMIT ? LIMIT : todoList.length;
         if (SKIP >= LIMIT) {
             SKIP -= newLength;
@@ -216,7 +215,7 @@ document.addEventListener('click', function (e) {
 
     }
     else if (e.target.id === 'Next') {
-        
+
         if (todoList.length === LIMIT) {
             SKIP += todoList.length;
             getTodos(SKIP);
@@ -233,11 +232,39 @@ document.addEventListener('click', function (e) {
         });
 
     }
-    else if(e.target.classList.contains('page')){
+    else if (e.target.classList.contains('page')) {
         let pageNo = e.target.pageNo;
         SKIP = (pageNo - 1) * LIMIT;
         getTodos(SKIP);
 
+    }
+    else if (e.target.id === 'changeProfilePic') {
+        const fileInput = document.getElementById('fileInput');
+        fileInput.click();
+        fileInput.addEventListener('change', function (e) {
+            const formData = new FormData();
+            const file = e.target.files[0];
+
+            console.log(formData, file);
+
+            if (file) {
+                formData.append('profilePic', file);
+
+                axios.post('/uploadDP', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                    .then((res) => {
+                        if (res.status === 200) {
+                            alert('Profile picture updated!');
+                        }
+                    })
+                    .catch((err) => {
+                        alert(err.message);
+                    });
+            };
+        })
     }
 })
 
@@ -341,7 +368,7 @@ if (loadPages) {
 }
 
 const user = document.getElementById('user');
-const email =  document.getElementById('email');
+const email = document.getElementById('email');
 
 function renderUser() {
     axios
@@ -349,7 +376,7 @@ function renderUser() {
         .then((res) => {
             console.log(res.data.data.name);
             user.textContent = res.data.data.name;
-            email.textContent= res.data.data.email;
+            email.textContent = res.data.data.email;
         })
         .catch((err) => {
             console.log(err);
@@ -357,7 +384,7 @@ function renderUser() {
         });
 }
 
-if(!user.textContent || user.textContent === ''){
+if (!user.textContent || user.textContent === '') {
     renderUser();
 }
 
