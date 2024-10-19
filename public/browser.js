@@ -175,7 +175,7 @@ document.addEventListener('click', function (e) {
                 alert(err.message);
             });
     }
-    else if (e.target.id === 'logout') {
+    else if (e.target.id === 'logout' || e.target.id === 'logoutIcon') {
         axios
             .post('/logout')
             .then((res) => {
@@ -187,7 +187,7 @@ document.addEventListener('click', function (e) {
             })
 
     }
-    else if (e.target.id === 'logoutAll') {
+    else if (e.target.id === 'logoutAll' || e.target.id === 'logoutAllIcon') {
         axios
             .post('/logoutAll')
             .then((res) => {
