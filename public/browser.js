@@ -55,6 +55,7 @@ function getDP() {
     axios
     .get('/get-userDP')
     .then((res) => {
+        console.log(res.data.data.img);
         if (res.status === 200) {
            const img = res.data.data.img;
 
@@ -257,6 +258,7 @@ document.addEventListener('click', function (e) {
                 })
                     .then((res) => {
                         if (res.status === 200) {
+                            getDP();
                             alert('Profile picture updated!');
                         }
                     })
