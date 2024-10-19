@@ -198,7 +198,7 @@ document.addEventListener('click', function (e) {
                 alert(err.message);
             })
     }
-    else if (e.target.id === 'Prve') {
+    else if (e.target.id === 'Prve' || e.target.id === 'PrveIcon') {
 
         const newLength = todoList && todoList.length < LIMIT ? LIMIT : todoList.length;
         if (SKIP >= LIMIT) {
@@ -215,7 +215,7 @@ document.addEventListener('click', function (e) {
         });
 
     }
-    else if (e.target.id === 'Next') {
+    else if (e.target.id === 'Next' || e.target.id === 'NextIcon') {
 
         if (todoList.length === LIMIT) {
             SKIP += todoList.length;
