@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* General page styling */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #2c3e50;
+      color: #fff;
+    }
+
+    /* Container styling */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      gap: 20px;
+      background-color: black;
+      /* Slightly lighter background */
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Label styling */
+    .label {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #c7ef27;
+      /* Bright yellow */
+      margin-bottom: 10px;
+
+    }
+
+    /* Input field styling */
+    .input-field {
+      padding: 12px 20px;
+      font-size: 1rem;
+      width: 100%;
+      max-width: 300px;
+      border: none;
+      border-radius: 8px;
+      background-color: #2c3e50;
+      color: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border: 2px solid #c7ef27;
+      background-color: #34495e;
+    }
+
+    /* Button styling */
+    .submit-btn {
+      padding: 12px 30px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #c7ef27;
+      color: #2c3e50;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      max-width: 200px;
+      margin-inline: auto;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background-color: #f39c12;
+      transform: translateY(-2px);
+    }
+
+    .submit-btn:active {
+      transform: translateY(1px);
+    }
+
+    .submit-btn:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px #eff802;
+    }
+  </style>
+</head>
+
+<body>
+    <div id="Re-email-div" class="container">
+        <div style="display: flex; flex-direction: column; align-items: center; width: 25%; 
+            border: #c7ef27 2px solid; padding: 10px; border-radius: 10px; box-sizing: border-box;">
+          <label for="Re-email" class="label">Enter your email </label>
+          <input type="email" id="Re-email" name="Re-email" class="input-field" placeholder="youremail@example.com"><br>
+          <button id="Re-email-btn" class="submit-btn">Submit</button>
+        </div>
+    
+      </div>
+
+
+  <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+  <script src="/getEmail_and_Password.js">
+
+  </script>
+</body>
+
+</html>

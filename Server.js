@@ -9,6 +9,7 @@ const formidable = require("formidable");
 const fs = require("fs");
 const path = require("path");
 const { v4: uuidv4 } = require('uuid')
+const jwt = require("jsonwebtoken");
 
 const store = new MongoDBStore({
     uri: process.env.MONGO_URL,
@@ -19,7 +20,7 @@ const store = new MongoDBStore({
 const UserModel = require("./models/userModel");
 const sessionModel = require("./models/sessionModel");
 const todoModel = require("./models/todoModel");
-const { userDataValidation, validateEmail } = require("./utill/userDataValidation");
+const { userDataValidation, validateEmail, generateJwtToken, sendVerificationEmail, sendPasswordEmail } = require("./utill/userDataValidation");
 const userDPModel = require("./models/userDPModel");
 const { isUserAuth } = require("./middlewares/isAuthMiddleware");
 const { todoValidation } = require("./utill/todoValidation")
@@ -104,13 +105,12 @@ app.post("/registration", async (req, res) => {
             password: hashedPassword
         });
         const userDb = await user.save();
+        const token = generateJwtToken(email);
+
+        sendVerificationEmail(email, token);
 
         return res.redirect("/login");
-        // return res.send({
-        //     status: 201,
-        //     message: "User Created",
-        //     data: userDb
-        // });
+
     } catch (error) {
         return res.send({ status: 500, message: error.message });
     }
@@ -118,6 +118,17 @@ app.post("/registration", async (req, res) => {
 
 })
 
+// verify email
+app.get("/verify-email/:token", async (req, res) => {
+    const { token } = req.params;
+    const email = jwt.verify(token, process.env.JWT_SECRET).email;
+    try {
+        await UserModel.findOneAndUpdate({ email: email }, { isEmailVerify: true });
+    } catch (error) {
+        console.log(error);
+    }
+    res.redirect("/login");
+})
 // login
 app.get("/login", (req, res) => {
     return res.render("Login");
@@ -148,6 +159,13 @@ app.post("/login", async (req, res) => {
             });
         }
 
+        if (!user.isEmailVerify) {
+            return res.send({
+                status: 404,
+                message: "Please verify your email"
+            });
+        }
+
         if (user && !bcrypt.compareSync(password, user.password)) {
             return res.send({
                 status: 404,
@@ -174,6 +192,68 @@ app.post("/login", async (req, res) => {
 
 })
 
+// change the page to get email for password change link
+app.get("/Changepassword", (req, res) => {
+
+    return res.render("Password_mail");
+})
+
+app.get("/resendEmail", (req, res) => {
+
+    return res.render("Email");
+})
+// get new password page
+app.get("/newPassword", (req, res) => {
+
+    return res.render("Email_Password");
+})
+// resend verification email
+app.post("/resend-verification-email", async (req, res) => {
+    const email = req.body.email; // Use req.query for GET parameters
+    console.log(email);
+
+    if (!email) {
+        return res.status(400).send('Email is required.');
+    }
+
+    try {
+        const token = generateJwtToken(email);
+        await sendVerificationEmail(email, token); // Ensure this function handles errors
+        return res.redirect("/login");
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send('Internal Server Error.');
+    }
+
+});
+// send Password to email
+app.post("/password-link", async (req, res) => {
+
+    const email = req.body.email;
+    await sendPasswordEmail(email);
+
+    return res.redirect("/login");
+})
+// change password
+
+app.post("/New-Password", async (req, res) => {
+
+    const { email, password } = req.body;
+    console.log(email, password);
+    try {
+        const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT));
+        await UserModel.findOneAndUpdate({ email: email }, { password: hashedPassword });
+        return res.send({
+            status: 200,
+            message: "Password Changed Successfully"
+        });
+    } catch (error) {
+        return res.send({
+            status: 500,
+            message: error.message
+        });
+    }
+})
 // Dashboard
 app.get("/dashboard", isUserAuth, (req, res) => {
 
@@ -409,7 +489,7 @@ app.post('/uploadDP', isUserAuth, (req, res) => {
         }
 
         const file = files.profilePic[0];
-    
+
         // Check if a file is uploaded and its MIME type
         if (!file || !file.filepath) {
             return res.status(400).json({ status: 400, message: "No file uploaded." });

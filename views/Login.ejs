@@ -97,10 +97,21 @@
     <label class="label" for="password">Password</label>
     <input class="input" type="password" id="password" name="password">
     <div class="btn-container">
-        <input class="btn" type="submit" value="Submit">
+      <input class="btn" type="submit" value="Submit">
     </div>
-    <p style="text-align: center; margin-top: 10px; color: #f9f8f4">Don't have an account? <a style="color: #f9ec3b;" href="/registration">Register</a></p>
+    <p style="text-align: center; margin-top: 10px; color: #f9f8f4; font-family: monospace;">Don't have an account? <a style="color: #f9ec3b;" href="/registration">Register</a></p>
+
   </form>
+  <p style="text-align: center; margin-top: 10px; display: flex; flex-direction: column; font-size: small;">
+    <a href="/Changepassword"  id="forgotPassword" style="color: #05f89f; text-align: center; margin-top: 10px; text-decoration: underline; font-family: monospace; cursor: pointer;">
+      <span >Forgot Password</span>
+    </a>
+    <a href="/resendEmail" id="resendvarificationEmail" style="color: #05f89f; text-align: center; margin-top: 10px; text-decoration: underline; font-family: monospace; cursor: pointer;">
+      <span >Resend Email Verification</span>
+    </a>
+  </p>
+
+  </script>
 </body>
 
 </html>

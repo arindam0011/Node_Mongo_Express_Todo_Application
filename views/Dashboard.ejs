@@ -24,7 +24,9 @@
 
           <!-- Profile Picture -->
           <div class="w-24 justify-center items-center flex-col mr-2">
-            <img id="DP" src="https://i.imgur.com/37OLBtw.png" alt="user" class="w-16 h-16 mx-auto rounded-xl object-cover border border-gray-300">
+            <div class="w-16 h-16 mx-auto rounded-xl object-cover border border-gray-300 overflow-hidden">
+              <img id="DP" src="https://i.imgur.com/37OLBtw.png" alt="user" class="w-full h-auto">
+            </div>
             <form action="/uploadDP" method="POST" enctype="multipart/form-data" class="hidden">
               <input type="file" name="profilePic" id="fileInput" class="hidden" accept=".png, .jpg, .jpeg">
               <button id="uploadProfilePic" type="submit"></button>
@@ -38,6 +40,11 @@
             <p id='email' class="w-full flex justify-between items-center text-left text-sm text-blue-500"></p>
           </div>
 
+        </div>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
+        <div class="w-full">
+          <button id='changePassword' class="w-full flex justify-between items-center text-left">Change Password <i id="logoutIcon" class="fa-solid fa-lock text-gray-600"></i></button>
         </div>
       </li>
       <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
@@ -69,15 +76,7 @@
     </div>
 
     <ul id="taskList" class="space-y-4">
-      <!-- Example task (remove once dynamic tasks are added) -->
-      <!-- <li class="flex justify-between items-center bg-gray-100 px-4 py-3 rounded-lg shadow-md select-none">
-        <span class="text-gray-700 select-text">Sample Task</span>
-        <div class="flex items-center">
-          <button class="text-blue-500 hover:text-blue-700 transition duration-200 ease-in-out cursor-pointer select-none"><i class="fa-solid fa-pen-to-square edit"></i></button>
-          <button class="text-blue-500 mx-5 hover:text-blue-700 transition duration-200 ease-in-out cursor-pointer select-none"><input class="done" type="checkbox" class="w-4 h-4 mt-2"></button>
-          <button class="text-red-500 hover:text-red-700 transition duration-200 ease-in-out cursor-pointer select-none"><i class="fa-solid fa-trash delete"></i></button>
-        </div>
-      </li> -->
+      <!-- Tasks will be dynamically added here -->
     </ul>
     <div class="flex max-w-72 justify-center items-center mt-6">
       <button id="Prve" class="bg-blue-500 mr-1 text-white px-2 py-1 text-sm font-medium rounded-full 
@@ -94,7 +93,7 @@
     </div>
   </div>
 
-  <!-- Script to toggle dropdown -->
+  
   <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
   <script src="/browser.js">
 

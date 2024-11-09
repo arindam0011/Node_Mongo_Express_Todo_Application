@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({ // alwayes use 'new' keyword in mongoos
         type: String,
         required: true
     },
+    isEmailVerify: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const UserModel = mongoose.models.User || mongoose.model('TodoUser', userSchema);

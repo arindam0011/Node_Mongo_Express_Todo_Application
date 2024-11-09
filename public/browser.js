@@ -32,11 +32,11 @@ function getAndRenderAllTodos() {
                             <span data-id="${item._id}" class="todo-text w-3/6 px-2 py-1 text-gray-700 select-text">${item.todo}</span>
                             <div class="btn-container flex items-center select-none w-52">
                                     <label for="${item._id}" class="mx-2 text-sm">Status:</label>
-                                    <select data-id="${item._id}" class="status-dropdown mr-1 text-gray-700 text-sm bg-gray-100 w-24">
-                                    <option>${item.currentStatus}</option>
-                                        <option value="Not Done!">Not Done!</option>
-                                        <option value="In Progress!">In Progress!</option>
-                                        <option value="Done!">Done!</option>
+                                    <select data-id="${item._id}" class="status-dropdown mr-1 text-sm bg-gray-100 w-24 font-semibold">
+                                    <option class="option">${item.currentStatus}</option>
+                                        <option class="option" value="Not Done!">Not Done!</option>
+                                        <option class="option" value="In Progress!">In Progress!</option>
+                                        <option class="option" value="Done!">Done!</option>
                                     </select>
                                 <button class="text-blue-500 mx-2 hover:text-blue-700 transition duration-200 ease-in-out cursor-pointer select-none"><i data-id=${item._id} class="fa-solid fa-pen-to-square edit btn-edit"></i></button>
                                 <button class="text-red-500 hover:text-red-700 transition duration-200 ease-in-out cursor-pointer select-none"><i data-id=${item._id}  class="fa-solid fa-trash delete btn-delete"></i></button>
@@ -45,33 +45,52 @@ function getAndRenderAllTodos() {
             }).join('')
             );
         })
+        .then(() => {
+            addColor();
+        })
+        .catch((err) => {
+            console.log(err);
+            alert('Internal Server Error!');
+        });
+
+}
+
+function getDP() {
+    axios
+        .get('/get-userDP')
+        .then((res) => {
+            console.log(res.data.data.img);
+            if (res.status === 200) {
+                const img = res.data.data.img;
+
+                const DP = document.getElementById('DP');
+                DP.src = img || 'https://i.imgur.com/37OLBtw.png';
+            }
+        })
         .catch((err) => {
             console.log(err);
             alert('Internal Server Error!');
         });
 }
 
-function getDP() {
-    axios
-    .get('/get-userDP')
-    .then((res) => {
-        console.log(res.data.data.img);
-        if (res.status === 200) {
-           const img = res.data.data.img;
-
-           const DP = document.getElementById('DP');
-           DP.src = img || 'https://i.imgur.com/37OLBtw.png';
-        }
-    })
-    .catch((err) => {
-        console.log(err);
-        alert('Internal Server Error!');
-    });
-}
-
 window.onload = getAndRenderAllTodos;
 
+const addColor = function () {
+    let TodoStatus = Array.from(document.querySelectorAll('.status-dropdown'));
 
+    console.log(TodoStatus);
+    TodoStatus.forEach((item) => {
+        if (item.value === 'Done!') {
+            item.classList.add('text-green-500');
+        }
+        else if (item.value === 'In Progress!') {
+            item.classList.add('text-yellow-500');
+        }
+        else if (item.value === 'Not Done!') {
+            item.classList.add('text-red-500');
+        }
+    })
+}
 
 // delete todo
 
@@ -268,6 +287,9 @@ document.addEventListener('click', function (e) {
             };
         })
     }
+    else if (e.target.id === 'changePassword') {
+        window.location.href = '/newPassword';
+    }
 })
 
 
@@ -315,7 +337,7 @@ function getTodos(SKIP) {
                             <span data-id="${item._id}" class="todo-text w-3/6 px-2 py-1 text-gray-700 select-text">${item.todo}</span>
                             <div class="btn-container flex items-center select-none w-52">
                                     <label for="${item._id}" class="mx-2 text-sm">Status:</label>
-                                    <select data-id="${item._id}" class="status-dropdown mr-1 text-gray-700 text-sm bg-gray-100 w-24">
+                                    <select data-id="${item._id}" class="status-dropdown mr-1 text-sm bg-gray-100 w-24 font-semibold">
                                     <option>${item.currentStatus}</option>
                                         <option value="Not Done!">Not Done!</option>
                                         <option value="In Progress!">In Progress!</option>
@@ -327,6 +349,9 @@ function getTodos(SKIP) {
                         </li>`
             }).join('')
             );
+        })
+        .then(() => {
+            addColor();
         })
         .catch((err) => {
             console.log(err);
