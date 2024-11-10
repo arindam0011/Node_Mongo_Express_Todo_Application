@@ -49,6 +49,10 @@ const sendVerificationEmail = async (email, token) => {
     },
   });
 
+  const baseURL = process.env.APP_ENV === 'Production' ? 'https://node-mongo-express-todo-application.onrender.com' :  `http://localhost:${process.env.PORT || 8000}`;
+
+  const verificationUrl = `${baseURL}/verify-email/${token}`;
+
   const mailOptions = {
     from: process.env.VERIFICATION_EMAIL,
     to: email,
@@ -64,7 +68,10 @@ const sendVerificationEmail = async (email, token) => {
               </p>
               
               <div style="text-align: center; margin: 30px 0;">
-                <a href="http://localhost:${process.env.PORT || 8000}/verify-email/${token}" style="display: inline-block; padding: 12px 25px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; transition: background-color 0.3s; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);">
+                <a href=${verificationUrl} 
+                  style="display: inline-block; padding: 12px 25px; background-color: #007BFF; 
+                  color: white; text-decoration: none; border-radius: 5px; font-weight: bold; 
+                  font-size: 16px; transition: background-color 0.3s; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);">
                   Verify Email
                 </a>
               </div>
@@ -105,11 +112,14 @@ const sendPasswordEmail = async (email) => {
       pass: process.env.VERIFICATION_EMAIL_PASSWORD,
     },
   });
+  const baseURL = process.env.APP_ENV === 'Production' ? 'https://node-mongo-express-todo-application.onrender.com' :  `http://localhost:${process.env.PORT || 8000}`;
+
+  const verificationUrl = `${baseURL}/newPassword`;
 
   const mailOptions = {
     from: process.env.VERIFICATION_EMAIL,
     to: email,
-    subject: "Email Verification from Todo App",
+    subject: "Reset Password from Todo App",
     html: `
         <div style="font-family: 'Arial', sans-serif; background-color: #f4f4f4; padding: 40px;">
             <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
@@ -121,8 +131,8 @@ const sendPasswordEmail = async (email) => {
               </p>
               
               <div style="text-align: center; margin: 30px 0;">
-                <a href="http://localhost:${process.env.PORT || 8000}/newPassword" style="display: inline-block; padding: 12px 25px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; transition: background-color 0.3s; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);">
-                  Redirect to Login Page
+                <a href=${verificationUrl} style="display: inline-block; padding: 12px 25px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; transition: background-color 0.3s; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);">
+                  Click Here to Reset Password!
                 </a>
               </div>
               
