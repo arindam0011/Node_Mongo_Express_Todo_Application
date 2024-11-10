@@ -10,6 +10,9 @@ const fs = require("fs");
 const path = require("path");
 const { v4: uuidv4 } = require('uuid')
 const jwt = require("jsonwebtoken");
+const cors = require('cors');
+
+
 
 const store = new MongoDBStore({
     uri: process.env.MONGO_URL,
@@ -35,8 +38,14 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
 }))
+
 app.use(express.static("public"));
 
+app.use(cors({
+    origin: 'https://node-mongo-express-todo-application.onrender.com', // replace with your actual frontend domain
+    methods: 'GET,POST,PUT,PATCH,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
+  }));
 // database connection
 
 mongoose.connect(process.env.MONGO_URL)
