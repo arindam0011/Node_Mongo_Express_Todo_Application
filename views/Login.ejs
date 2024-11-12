@@ -87,6 +87,7 @@
       justify-content: center;
     }
   </style>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -95,7 +96,11 @@
     <label class="label" for="loginId">Login ID</label>
     <input class="input" type="text" id="email" name="loginId" placeholder="Email or Username">
     <label class="label" for="password">Password</label>
-    <input class="input" type="password" id="password" name="password">
+    <div class="input" style="display: flex; align-items: center; justify-content: space-between; user-select: none; 
+    background-color: white; padding-right: 20px;">
+      <input  style="width: 100%; height: 90%; border: none; outline: none;" type="password" id="password" name="password">
+      <i id="eye-icon" class="fas fa-eye"></i>
+    </div>
     <div class="btn-container">
       <input class="btn" type="submit" value="Submit">
     </div>
@@ -110,8 +115,22 @@
       <span >Resend Email Verification</span>
     </a>
   </p>
-
-  </script>
+<script>
+const eyeIcon = document.getElementById('eye-icon');
+const passwordInput = document.getElementById('password');
+eyeIcon.addEventListener('click', () => {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    });
+</script>
+  
 </body>
 
 </html>
