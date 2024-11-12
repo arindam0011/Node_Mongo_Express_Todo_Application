@@ -34,9 +34,9 @@ function getAndRenderAllTodos() {
                                     <label for="${item._id}" class="mx-2 text-sm">Status:</label>
                                     <select data-id="${item._id}" class="status-dropdown mr-1 text-sm bg-gray-100 w-24 font-semibold">
                                     <option class="option">${item.currentStatus}</option>
-                                        <option class="option" value="Not Done!">Not Done!</option>
-                                        <option class="option" value="In Progress!">In Progress!</option>
-                                        <option class="option" value="Done!">Done!</option>
+                                        <option class="option text-red-500" value="Not Done!">Not Done!</option>
+                                        <option class="option text-yellow-500" value="In Progress!">In Progress!</option>
+                                        <option class="option text-green-500" value="Done!">Done!</option>
                                     </select>
                                 <button class="text-blue-500 mx-2 hover:text-blue-700 transition duration-200 ease-in-out cursor-pointer select-none"><i data-id=${item._id} class="fa-solid fa-pen-to-square edit btn-edit"></i></button>
                                 <button class="text-red-500 hover:text-red-700 transition duration-200 ease-in-out cursor-pointer select-none"><i data-id=${item._id}  class="fa-solid fa-trash delete btn-delete"></i></button>
@@ -47,6 +47,7 @@ function getAndRenderAllTodos() {
         })
         .then(() => {
             addColor();
+
         })
         .catch((err) => {
             console.log(err);
@@ -54,6 +55,7 @@ function getAndRenderAllTodos() {
         });
 
 }
+
 
 function getDP() {
     axios
@@ -290,6 +292,17 @@ document.addEventListener('click', function (e) {
     else if (e.target.id === 'changePassword') {
         window.location.href = '/newPassword';
     }
+    else if (e.target.id === 'deleteAccount') {
+        axios
+            .post('/delete-user')
+            .then((res) => {
+                alert("Account deleted");
+                window.location.href = '/login';
+            })
+            .catch((err) => {
+                alert(err.message);
+            })
+    }
 })
 
 
@@ -303,10 +316,23 @@ document.addEventListener('change', function (e) {
         const todoStatusValue = e.target.value;
         console.log({ todoId, newTodo, todoStatusValue });
 
+
+        e.target.classList.remove('text-green-500', 'text-yellow-500', 'text-red-500');
+
+
+            if (todoStatusValue === 'Done!') {
+                e.target.classList.add('text-green-500');
+            } else if (todoStatusValue === 'In Progress!') {
+                e.target.classList.add('text-yellow-500');
+            } else {
+                e.target.classList.add('text-red-500');
+            }
+
         axios
             .post('/edit-todo', { todoId, newTodo, todoStatusValue })
             .then((res) => {
                 if (res.status === 200) {
+                    
                     alert('Todo status updated!');
                     return;
                 }
@@ -314,7 +340,7 @@ document.addEventListener('change', function (e) {
             .catch((err) => {
                 alert(err.message);
             });
-
+            
     }
 })
 
@@ -339,9 +365,9 @@ function getTodos(SKIP) {
                                     <label for="${item._id}" class="mx-2 text-sm">Status:</label>
                                     <select data-id="${item._id}" class="status-dropdown mr-1 text-sm bg-gray-100 w-24 font-semibold">
                                     <option>${item.currentStatus}</option>
-                                        <option value="Not Done!">Not Done!</option>
-                                        <option value="In Progress!">In Progress!</option>
-                                        <option value="Done!">Done!</option>
+                                        <option class="text-red-500" value="Not Done!">Not Done!</option>
+                                        <option class="text-yellow-500" value="In Progress!">In Progress!</option>
+                                        <option class="text-green-500" value="Done!">Done!</option>
                                     </select>
                                 <button class="text-blue-500 mx-2 hover:text-blue-700 transition duration-200 ease-in-out cursor-pointer select-none"><i data-id=${item._id} class="fa-solid fa-pen-to-square edit btn-edit"></i></button>
                                 <button class="text-red-500 hover:text-red-700 transition duration-200 ease-in-out cursor-pointer select-none"><i data-id=${item._id}  class="fa-solid fa-trash delete btn-delete"></i></button>
@@ -352,6 +378,7 @@ function getTodos(SKIP) {
         })
         .then(() => {
             addColor();
+
         })
         .catch((err) => {
             console.log(err);

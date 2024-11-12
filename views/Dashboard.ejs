@@ -53,8 +53,13 @@
         </div>
       </li>
       <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
-        <div id='logoutAll' class="w-full">
+        <div class="w-full">
           <button id="logoutAll" class="w-full flex justify-between items-center text-left"> Logout From All Devices <i id="logoutAllIcon" class="fa-solid fa-power-off text-red-600"></i></button>
+        </div>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
+        <div  class="w-full">
+          <button id='deleteAccount' class="w-full flex justify-between items-center text-left"> Delete Account <i id="logoutAllIcon" class="fa-solid fa-trash text-red-600"></i></button>
         </div>
       </li>
     </ul>
@@ -78,7 +83,7 @@
     <ul id="taskList" class="space-y-4">
       <!-- Tasks will be dynamically added here -->
     </ul>
-    <div class="flex max-w-72 justify-center items-center mt-6">
+    <div class="flex max-w-72 justify-center items-center mt-6 position absolute bottom-0 left-1/2 transform -translate-x-1/2">
       <button id="Prve" class="bg-blue-500 mr-1 text-white px-2 py-1 text-sm font-medium rounded-full 
       hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out select-none cursor-pointer">
         <i id="PrveIcon" class="fa-solid fa-arrow-left"></i>

@@ -292,6 +292,7 @@ app.post("/logoutAll", isUserAuth, async (req, res) => {
 // Create Todo
 app.post('/create-todo', isUserAuth, async (req, res) => {
     const username = req.session.user.username;
+    const email = req.session.user.email;
     const { newTodo } = req.body;
     const todo = req.body.newTodo;
 
@@ -309,6 +310,7 @@ app.post('/create-todo', isUserAuth, async (req, res) => {
         let todoObj = new todoModel({
             todo: todo,
             userName: username,
+            email: email
         })
 
         const todoDB = await todoObj.save();
@@ -330,7 +332,7 @@ app.post('/create-todo', isUserAuth, async (req, res) => {
 
 // Get Todo
 app.get('/get-todo', isUserAuth, async (req, res) => {
-    const username = req.session.user.username;
+    const email = req.session.user.email;
     const SKIP = Number(req.query.skip) || 0;
     const Limit = 7;
 
@@ -346,7 +348,7 @@ app.get('/get-todo', isUserAuth, async (req, res) => {
 
         //4) (most resent first using aggregation) 
         const todolist = await todoModel.aggregate([
-            { $match: { userName: username } },
+            { $match: { email: email } },
             { $sort: { createdAt: -1 } },
             { $skip: SKIP },
             { $limit: Limit },
@@ -378,7 +380,7 @@ app.post('/edit-todo', isUserAuth, async (req, res) => {
     const todoId = req.body.todoId;
     const newTodo = req.body.newTodo;
     const todoStatusValue = req.body.todoStatusValue;
-    const username = req.session.user.username;
+    const email = req.session.user.email;
 
     try {
         await todoValidation({ todo: newTodo });
@@ -391,7 +393,7 @@ app.post('/edit-todo', isUserAuth, async (req, res) => {
     try {
         // Ownership check 
         const userCheckDB = await todoModel.findOne({ _id: todoId });
-        if (userCheckDB.userName !== username) {
+        if (userCheckDB.email !== email) {
             return res.send({
                 status: 403,
                 message: "You are not allowed to update this todo",
@@ -417,11 +419,11 @@ app.post('/edit-todo', isUserAuth, async (req, res) => {
 // Delete Todo
 app.post('/delete-todo', isUserAuth, async (req, res) => {
     const todoId = req.body.todoId;
-    const username = req.session.user.username;
+    const email = req.session.user.email;
     try {
         // Ownership check 
         const userCheckDB = await todoModel.findOne({ _id: todoId });
-        if (userCheckDB.userName !== username) {
+        if (userCheckDB.email !== email) {
             return res.send({
                 status: 403,
                 message: "You are not allowed to delete this todo",
@@ -446,10 +448,10 @@ app.post('/delete-todo', isUserAuth, async (req, res) => {
 })
 
 app.get('/total-todo-count', isUserAuth, async (req, res) => {
-    const username = req.session.user.username;
+    const email = req.session.user.email;
 
     try {
-        const todolist = await todoModel.find({ userName: username });
+        const todolist = await todoModel.find({ email: email });
         if (todolist.length === 0 || !todolist) {
             return res.send({
                 status: 204,
@@ -559,6 +561,21 @@ app.get('/get-userDP', isUserAuth, async (req, res) => {
         })
     }
 })
+
+app.post('/delete-user', isUserAuth, async (req, res) => {
+    const email = req.session.user.email;
+    console.log(email);
+    try {
+         await UserModel.findOneAndDelete({ email: email });
+        return res.redirect('/login');
+    } catch (error) {
+        return res.send({
+            status: 500,
+            message: 'Iternal Server Error',
+            error: error
+        })
+    }
+});
 
 
 app.listen(Port, () => {
