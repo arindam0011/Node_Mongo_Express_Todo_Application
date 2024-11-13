@@ -25,14 +25,14 @@
     #form {
       width: 400px;
       height: auto;
-      background-color: #404040;
+      background-color: black;
       border-radius: 20px;
-      border: 2px solid #a2a2a3;
+      border: 2px solid #c7ef27;
       display: flex;
       justify-content: center;
       flex-direction: column;
       padding: 10px;
-      box-shadow: 0 0 10px 5px rgba(190, 189, 189, 0.3);
+      box-shadow: 0 0 10px 5px black;
     }
 
     .h1 {
@@ -50,15 +50,18 @@
       font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
       margin-bottom: 5px;
       font-weight: bold;
+      color: #c7ef27;
+      font-size: 0.9rem;
     }
 
     .input {
       margin-bottom: 10px;
       width: 100%;
-      height: 40px;
+      height: 50px;
       border-radius: 10px;
       border: none;
       padding-left: 10px;
+      background-color: #34495e;
     }
 
     .btn {
@@ -80,12 +83,18 @@
       width: 80%;
       margin-inline: auto;
 
-    }
+      }
 
-    .btn-container {
+      .btn-container {
       display: flex;
       justify-content: center;
-    }
+      }
+      @media screen and (max-width: 500px) {
+      #form {
+      width: 90vw;
+      }
+
+      }
   </style>
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -97,8 +106,8 @@
     <input class="input" type="text" id="email" name="loginId" placeholder="Email or Username">
     <label class="label" for="password">Password</label>
     <div class="input" style="display: flex; align-items: center; justify-content: space-between; user-select: none; 
-    background-color: white; padding-right: 20px;">
-      <input  style="width: 100%; height: 90%; border: none; outline: none;" type="password" id="password" name="password">
+     padding-right: 20px;">
+      <input style="width: 90%; height: 90%; border: none; outline: none; background-color: #34495e;" type="password" id="password" name="password" placeholder="Enter your password">
       <i id="eye-icon" class="fas fa-eye"></i>
     </div>
     <div class="btn-container">

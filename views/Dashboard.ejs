@@ -8,17 +8,95 @@
   <link rel="stylesheet" href="/app.css">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    @media screen and (max-width: 500px) {
+      #mainContainer{
+        width: 100vw;
+        height: 100vh;
+        padding-bottom: 10px;
+        margin: 0;
+        border-radius: 0;
+        overflow: hidden;
+      }
+     #dropdownButton{
+      top : 0px;
+      right: 0px;
+      content: black;
+     }
+     #dropdownicon{
+      top : 10px;
+      right: 10px;
+      color: black;
+      padding: 0px;
+      padding-right: 10px;
+    }
+    #dropdownMenu{
+      top : 15px;
+      right: 10px;
+      z-index: 1;
+    }
+    #heading{
+      font-size: 25px;
+      margin-top: 10px;
+      width: 50%;
+      margin-inline: auto;
+    }
+    #h1Line{
+      width: 50%;
+      margin-inline: auto;
+    }
+    .todo-text{
+      font-size: 13px;
+      width: 50%;
+      box-sizing: border-box;
+    }
+    .status-label,.status-dropdown{
+      font-size: 9px;
+      margin: 0px;
+      margin-left: 5px;
+    } 
+    .status-dropdown{
+      width: 70px;
+    }
+    .btn-container{
+     flex-wrap: wrap;
+     width: 45%;
+    }
+    .todo{
+      padding: 5px;
+    }
+    #pagination{
+      bottom: 15px;
+    }
+    #themeicon{
+      top: 10px;
+      left: 10px;
+    }
+    #themeButton{
+      top: 0px;
+      left: 0px;
+    }
+  }
+  </style>
+
 </head>
 
 <body class="bg-black min-h-screen flex justify-center relative">
 
+  <div id="themeButton" class="fixed top-4 left-4 z-50 bg">
+    <i id="themeicon" class="fa-solid fa-moon text-gray-900 text-xl px-4 py-2 absolute top-2 left-4 rounded-lg bg-gray-100
+    hover:bg-gray-100 hover:text-gray-900 select-none"></i>
+  </div>
+
   <!-- Dropdown positioned in the top-right -->
   <div class="absolute top-2 right-0 w-80 select-none">
     <div class="flex justify-end items-center w-48 cursor-pointer" id="dropdownButton">
-      <i class="fa-solid fa-bars text-gray-100 text-xl px-4 py-2 absolute top-2 right-4 rounded-lg hover:bg-gray-100 hover:text-gray-600"></i>
+      <i id="dropdownicon" class="fa-solid fa-bars text-gray-100 text-xl px-4 py-2 absolute top-2 right-4 rounded-lg hover:bg-gray-100 hover:text-gray-600"></i>
     </div>
 
-    <ul id="dropdownMenu" class="absolute top-10 right-4 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg hidden w-10">
+    <ul id="dropdownMenu" class="absolute top-10 right-4 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg 
+    hidden w-10">
       <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
         <div class="w-full flex justify-between items-center text-lef">
 
@@ -66,10 +144,11 @@
   </div>
 
   <!-- Main Container -->
-  <div class="container mx-auto max-h-screen px-4 w-5/12 bg-white rounded-lg shadow-lg">
-    <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-pink-500 to-blue-200 bg-clip-text text-transparent tracking-tight relative">
+  <div id="mainContainer" class="container mx-auto max-h-screen px-4 w-5/12 bg-white rounded-lg shadow-lg">
+    <h1 id="heading" class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-pink-500 via-pink-300 via-pink-100 via-blue-100 via-blue-300 to-blue-500 
+    bg-clip-text text-transparent tracking-tight relative">
       YOUR TODOs!
-      <span class="absolute w-2/6 mx-auto inset-x-0 -bottom-1 h-1 bg-gradient-to-r from-blue-200 via-pink-300 via-pink-300 to-blue-200"></span>
+      <span id="h1Line" class="absolute w-2/6 mx-auto inset-x-0 -bottom-1 h-1 bg-gradient-to-r from-blue-200 via-pink-300 via-pink-300 to-blue-200"></span>
     </h1>
 
     <div class="input-container position sticky top-0 flex items-center mb-6 bg-gray-100 px-4 py-2 rounded-lg">
@@ -83,7 +162,7 @@
     <ul id="taskList" class="space-y-4">
       <!-- Tasks will be dynamically added here -->
     </ul>
-    <div class="flex max-w-72 justify-center items-center mt-6 position absolute bottom-0 left-1/2 transform -translate-x-1/2">
+    <div id="pagination" class="flex max-w-72 justify-center items-center mt-6 position absolute bottom-0 left-1/2 transform -translate-x-1/2">
       <button id="Prve" class="bg-blue-500 mr-1 text-white px-2 py-1 text-sm font-medium rounded-full 
       hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out select-none cursor-pointer">
         <i id="PrveIcon" class="fa-solid fa-arrow-left"></i>

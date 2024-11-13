@@ -303,6 +303,25 @@ document.addEventListener('click', function (e) {
                 alert(err.message);
             })
     }
+    else if (e.target.id === 'themeicon') {
+        const todoContainer = document.getElementById('mainContainer');
+        const dropdownIcon = document.getElementById('dropdownicon');
+
+        e.target.classList.toggle('fa-moon');
+        e.target.classList.toggle('fa-sun');
+        todoContainer.classList.toggle('bg-white');
+        todoContainer.classList.toggle('bg-black');
+
+        const isSmallScreen = window.matchMedia('(max-width: 500px)').matches;
+        if (isSmallScreen) {
+            if (dropdownIcon.style.color === 'white') {
+                dropdownIcon.style.color = 'black';
+            }
+            else {
+                dropdownIcon.style.color = 'white';
+            }
+        }
+    }
 })
 
 
@@ -320,19 +339,19 @@ document.addEventListener('change', function (e) {
         e.target.classList.remove('text-green-500', 'text-yellow-500', 'text-red-500');
 
 
-            if (todoStatusValue === 'Done!') {
-                e.target.classList.add('text-green-500');
-            } else if (todoStatusValue === 'In Progress!') {
-                e.target.classList.add('text-yellow-500');
-            } else {
-                e.target.classList.add('text-red-500');
-            }
+        if (todoStatusValue === 'Done!') {
+            e.target.classList.add('text-green-500');
+        } else if (todoStatusValue === 'In Progress!') {
+            e.target.classList.add('text-yellow-500');
+        } else {
+            e.target.classList.add('text-red-500');
+        }
 
         axios
             .post('/edit-todo', { todoId, newTodo, todoStatusValue })
             .then((res) => {
                 if (res.status === 200) {
-                    
+
                     alert('Todo status updated!');
                     return;
                 }
@@ -340,7 +359,7 @@ document.addEventListener('change', function (e) {
             .catch((err) => {
                 alert(err.message);
             });
-            
+
     }
 })
 
@@ -362,7 +381,7 @@ function getTodos(SKIP) {
                 return `<li class="todo flex justify-between items-center bg-gray-100 px-4 py-3 rounded-lg shadow-md select-none w-full">
                             <span data-id="${item._id}" class="todo-text w-3/6 px-2 py-1 text-gray-700 select-text">${item.todo}</span>
                             <div class="btn-container flex items-center select-none w-52">
-                                    <label for="${item._id}" class="mx-2 text-sm">Status:</label>
+                                    <label for="${item._id}" class="status-label mx-2 text-sm">Status:</label>
                                     <select data-id="${item._id}" class="status-dropdown mr-1 text-sm bg-gray-100 w-24 font-semibold">
                                     <option>${item.currentStatus}</option>
                                         <option class="text-red-500" value="Not Done!">Not Done!</option>
