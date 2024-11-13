@@ -60,6 +60,15 @@
       background-color: #34495e;
     }
 
+    input:-webkit-autofill {
+      background-color: #34495e !important;
+      color: #fff !important;
+    }
+    input:autofill {
+      background-color: #34495e !important;
+      color: #fff !important;
+    }
+
     /* Button styling */
     .submit-btn {
       padding: 12px 30px;
@@ -91,16 +100,19 @@
     }
 
     @media screen and (max-width: 500px) {
-      #child-email-div{
+      #child-email-div {
         width: 90vw !important;
       }
-      #Re-email{
+
+      #Re-email {
         width: 90%;
       }
-      #Re-email{
+
+      #Re-email {
         margin: 0 !important;
       }
-      #Re-email-btn{
+
+      #Re-email-btn {
         margin: 0 !important;
       }
     }
@@ -108,15 +120,15 @@
 </head>
 
 <body>
-    <div id="Re-email-div" class="container">
-        <div id="child-email-div" style="display: flex; flex-direction: column; align-items: center; width: 25%; 
+  <div id="Re-email-div" class="container">
+    <div id="child-email-div" style="display: flex; flex-direction: column; align-items: center; width: 25%; 
             border: #c7ef27 2px solid; padding: 10px; border-radius: 10px; box-sizing: border-box;">
-          <label for="Re-email" class="label">Enter your email </label>
-          <input type="email" id="Re-email" name="Re-email" class="input-field" placeholder="youremail@example.com"><br>
-          <button id="Re-email-btn" class="submit-btn">Submit</button>
-        </div>
-    
-      </div>
+      <label for="Re-email" class="label">Enter your email </label>
+      <input type="email" id="Re-email" name="Re-email" class="input-field" placeholder="youremail@example.com"><br>
+      <button id="Re-email-btn" class="submit-btn">Submit</button>
+    </div>
+
+  </div>
 
 
   <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
