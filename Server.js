@@ -578,6 +578,6 @@ app.post('/delete-user', isUserAuth, async (req, res) => {
 });
 
 
-app.listen(Port, () => {
+app.listen(Port,  '0.0.0.0', () => {
     console.log(`Server is running at port http://localhost:${Port}`);
 })
