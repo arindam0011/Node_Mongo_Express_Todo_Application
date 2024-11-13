@@ -32,12 +32,12 @@
       padding-right: 10px;
     }
     #dropdownMenu{
-      top : 15px;
+      top : 21px;
       right: 10px;
       z-index: 1;
     }
     #heading{
-      font-size: 25px;
+      font-size: 30px;
       margin-top: 10px;
       width: 50%;
       margin-inline: auto;
@@ -48,8 +48,9 @@
     }
     .todo-text{
       font-size: 13px;
-      width: 50%;
+      width: 60%;
       box-sizing: border-box;
+      padding: 7px;
     }
     .status-label,.status-dropdown{
       font-size: 9px;
@@ -61,7 +62,7 @@
     }
     .btn-container{
      flex-wrap: wrap;
-     width: 45%;
+     width: 40%;
     }
     .todo{
       padding: 5px;
@@ -84,7 +85,7 @@
 
 <body class="bg-black min-h-screen flex justify-center relative">
 
-  <div id="themeButton" class="fixed top-4 left-4 z-50 bg">
+  <div id="themeButton" class="fixed top-4 left-4 z-5 bg">
     <i id="themeicon" class="fa-solid fa-moon text-gray-900 text-xl px-4 py-2 absolute top-2 left-4 rounded-lg bg-gray-100
     hover:bg-gray-100 hover:text-gray-900 select-none"></i>
   </div>
@@ -96,7 +97,7 @@
     </div>
 
     <ul id="dropdownMenu" class="absolute top-10 right-4 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg 
-    hidden w-10">
+    hidden w-10 z-10">
       <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
         <div class="w-full flex justify-between items-center text-lef">
 
