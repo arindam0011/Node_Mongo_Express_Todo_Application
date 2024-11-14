@@ -548,6 +548,12 @@ app.get('/get-userDP', isUserAuth, async (req, res) => {
     const username = req.session.user.username;
     try {
         const userDB = await userDPModel.findOne({ username: username });
+        console.log(userDB);
+        if (!userDB || userDB === null) return res.send({
+            status: 204,
+            message: "User Not Found",
+        });
+
         return res.send({
             status: 200,
             message: "User Found",

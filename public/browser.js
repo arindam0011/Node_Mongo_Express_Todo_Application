@@ -62,16 +62,17 @@ function getDP() {
         .get('/get-userDP')
         .then((res) => {
             console.log(res.data.data.img);
-            if (res.status === 200) {
-                const img = res.data.data.img;
+            if (res.status === 200 && res.data.data.img !== 'undefined') {
+                const img = res.data.data.img || 'https://i.imgur.com/37OLBtw.png';
 
+                if(!img || img=== 'undefined') return;
+                
                 const DP = document.getElementById('DP');
-                DP.src = img || 'https://i.imgur.com/37OLBtw.png';
+                DP.src = img;
             }
         })
         .catch((err) => {
             console.log(err);
-            alert('Internal Server Error!');
         });
 }
 
