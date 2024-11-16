@@ -1,7 +1,11 @@
 
 document.getElementById('dropdownButton').addEventListener('click', function (e) {
-    e.target.style.backgroundColor = 'white';
-    e.target.style.color = 'black';
+    const isSmallScreen = window.matchMedia('(max-width: 500px)').matches;
+    if (!isSmallScreen) {
+        e.target.style.color = 'black';
+        e.target.style.backgroundColor.toggle = 'white';
+    }
+
     const menu = document.getElementById('dropdownMenu');
     menu.classList.toggle('hidden');
     getDP();
@@ -65,8 +69,8 @@ function getDP() {
             if (res.status === 200 && res.data.data.img !== 'undefined') {
                 const img = res.data.data.img || 'https://i.imgur.com/37OLBtw.png';
 
-                if(!img || img=== 'undefined') return;
-                
+                if (!img || img === 'undefined') return;
+
                 const DP = document.getElementById('DP');
                 DP.src = img;
             }
@@ -315,12 +319,8 @@ document.addEventListener('click', function (e) {
 
         const isSmallScreen = window.matchMedia('(max-width: 500px)').matches;
         if (isSmallScreen) {
-            if (dropdownIcon.style.color === 'white') {
                 dropdownIcon.style.color = 'black';
-            }
-            else {
-                dropdownIcon.style.color = 'white';
-            }
+                dropdownIcon.style.backgroundColor = 'white';
         }
     }
 })
