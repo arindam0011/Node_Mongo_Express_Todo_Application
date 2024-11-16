@@ -239,6 +239,13 @@ app.post("/resend-verification-email", async (req, res) => {
 app.post("/password-link", async (req, res) => {
 
     const email = req.body.email;
+    const userDB = await UserModel.findOne({ email: email });
+    if (!userDB) {
+        return res.send({
+            status: 403,
+            message: "Forbidden Access"
+        });
+    }
     await sendPasswordEmail(email);
 
     return res.redirect("/login");

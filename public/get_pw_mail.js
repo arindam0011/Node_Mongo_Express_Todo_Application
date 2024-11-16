@@ -11,7 +11,7 @@ PasswordBtn.addEventListener("click", () => {
     axios
         .post("/password-link", { email })
         .then((res) => {
-            alert("Check your email for password!!");
+            alert( res.data.message + "!! Check your email for password!!" || "Check your email for password!!");
             window.location.href = '/login'
         })
         .catch((err) => {
