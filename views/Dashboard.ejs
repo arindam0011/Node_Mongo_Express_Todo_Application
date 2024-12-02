@@ -10,8 +10,25 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <style>
+    ::-webkit-scrollbar {
+      background-color: transparent;
+      /* Background color of the scrollbar track */
+      width: 10px;
+      /* Width of the scrollbar */
+    }
+
+    /* Customize the scrollbar slider (thumb) */
+    ::-webkit-scrollbar-thumb {
+      background-color: rgb(248, 108, 2);
+      /* Color of the scrollbar slider */
+      border-radius: 6px;
+      /* Rounded corners for the slider */
+    }
+
+
+
     @media screen and (max-width: 500px) {
-      #mainContainer{
+      #mainContainer {
         width: 100vw;
         height: 100vh;
         padding-bottom: 10px;
@@ -19,63 +36,77 @@
         border-radius: 0;
         overflow: hidden;
       }
-     #dropdownButton{
-      top : 0px;
-      right: 0px;
-      color: black;
-     }
-     #dropdownicon{
-      top : 0px;
-      right: 10px;
-      color: black;
+
+      #dropdownButton {
+        top: 0px;
+        right: 0px;
+        color: black;
+      }
+
+      #dropdownicon {
+        top: 0px;
+        right: 10px;
+        color: black;
+      }
+
+      #dropdownMenu {
+        top: 31px;
+        right: 10px;
+      }
+
+      #heading {
+        font-size: 30px;
+        margin-top: 10px;
+        width: 50%;
+        margin-inline: auto;
+      }
+
+      #h1Line {
+        width: 50%;
+        margin-inline: auto;
+      }
+
+      .todo-text {
+        font-size: 13px;
+        width: 60%;
+        box-sizing: border-box;
+        padding: 7px;
+      }
+
+      .status-label,
+      .status-dropdown {
+        font-size: 9px;
+        margin: 0px;
+        margin-left: 5px;
+      }
+
+      .status-dropdown {
+        width: 70px;
+      }
+
+      .btn-container {
+        flex-wrap: wrap;
+        width: 40%;
+      }
+
+      .todo {
+        padding: 5px;
+      }
+
+      #pagination {
+        bottom: 15px;
+      }
+
+      #themeicon {
+        top: 10px;
+        left: 10px;
+      }
+
+      #themeButton {
+        top: 0px;
+        left: 0px;
+      }
     }
-    #dropdownMenu{
-      top : 31px;
-      right: 10px;
-    }
-    #heading{
-      font-size: 30px;
-      margin-top: 10px;
-      width: 50%;
-      margin-inline: auto;
-    }
-    #h1Line{
-      width: 50%;
-      margin-inline: auto;
-    }
-    .todo-text{
-      font-size: 13px;
-      width: 60%;
-      box-sizing: border-box;
-      padding: 7px;
-    }
-    .status-label,.status-dropdown{
-      font-size: 9px;
-      margin: 0px;
-      margin-left: 5px;
-    } 
-    .status-dropdown{
-      width: 70px;
-    }
-    .btn-container{
-     flex-wrap: wrap;
-     width: 40%;
-    }
-    .todo{
-      padding: 5px;
-    }
-    #pagination{
-      bottom: 15px;
-    }
-    #themeicon{
-      top: 10px;
-      left: 10px;
-    }
-    #themeButton{
-      top: 0px;
-      left: 0px;
-    }
-  }
   </style>
 
 </head>
@@ -134,7 +165,7 @@
         </div>
       </li>
       <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer w-full">
-        <div  class="w-full">
+        <div class="w-full">
           <button id='deleteAccount' class="w-full flex justify-between items-center text-left"> Delete Account <i id="logoutAllIcon" class="fa-solid fa-trash text-red-600"></i></button>
         </div>
       </li>
@@ -157,10 +188,14 @@
       focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out">Add Task</button>
     </div>
 
-    <ul id="taskList" class="space-y-4">
-      <!-- Tasks will be dynamically added here -->
-    </ul>
-    <div id="pagination" class="flex max-w-72 justify-center items-center mt-6 position absolute bottom-0 left-1/2 transform -translate-x-1/2">
+    <div id="taskContainer" class="h-3/4 overflow-y-auto px-1">
+      <ul id="taskList" class="space-y-4">
+        <!-- Tasks will be dynamically added here -->
+      </ul>
+    </div>
+
+
+    <div id="pagination" class="flex max-w-72 justify-center items-center mt-6 position absolute bottom-1 left-1/2 transform -translate-x-1/2">
       <button id="Prve" class="bg-blue-500 mr-1 text-white px-2 py-1 text-sm font-medium rounded-full 
       hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out select-none cursor-pointer">
         <i id="PrveIcon" class="fa-solid fa-arrow-left"></i>
@@ -175,7 +210,7 @@
     </div>
   </div>
 
-  
+
   <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
   <script src="/browser.js">
 

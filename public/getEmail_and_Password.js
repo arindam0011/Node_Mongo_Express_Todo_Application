@@ -11,10 +11,10 @@ ResendBtn.addEventListener("click", () => {
     }
     console.log(email);
     axios
-        .post("/resend-verification-email", {email })
+        .post("/user/resend-verification-email", {email })
         .then((res) => {
             alert("Verification email sent");
-            window.location.href = '/login'
+            window.location.href = '/user/login'
         })
         .catch((err) => {
             alert("Internal Server Error"); 

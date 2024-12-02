@@ -9,10 +9,10 @@ PasswordBtn.addEventListener("click", () => {
     }
     console.log(email);
     axios
-        .post("/password-link", { email })
+        .post("/user/password-link", { email })
         .then((res) => {
             alert( res.data.message + "!! Check your email for password!!" || "Check your email for password!!");
-            window.location.href = '/login'
+            window.location.href = '/user/login'
         })
         .catch((err) => {
             alert("Internal Server Error"); 

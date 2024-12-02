@@ -107,7 +107,7 @@
 </head>
 
 <body>
-  <form id="form" action="/login" method="POST">
+  <form id="form" action="/user/login" method="POST">
     <h1 class="h1">Login</h1>
     <label class="label" for="loginId">Login ID</label>
     <input class="input" type="text" id="email" name="loginId" placeholder="Email or Username">
@@ -118,19 +118,21 @@
       <i id="eye-icon" class="fas fa-eye"></i>
     </div>
     <div class="btn-container">
-      <input class="btn" type="submit" value="Submit">
+      <input class="btn" id="submit" type="submit" value="Submit">
     </div>
-    <p style="text-align: center; margin-top: 10px; color: #f9f8f4; font-family: monospace;">Don't have an account? <a style="color: #f9ec3b;" href="/registration">Register</a></p>
+    <p style="text-align: center; margin-top: 10px; color: #f9f8f4; font-family: monospace;">Don't have an account? <a style="color: #f9ec3b;" href="/user/registration">Register</a></p>
 
   </form>
   <p style="text-align: center; margin-top: 10px; display: flex; flex-direction: column; font-size: small;">
-    <a href="/Changepassword"  id="forgotPassword" style="color: #05f89f; text-align: center; margin-top: 10px; text-decoration: underline; font-family: monospace; cursor: pointer;">
+    <a href="/user/Changepassword"  id="forgotPassword" style="color: #05f89f; text-align: center; margin-top: 10px; text-decoration: underline; font-family: monospace; cursor: pointer;">
       <span >Forgot Password</span>
     </a>
-    <a href="/resendEmail" id="resendvarificationEmail" style="color: #05f89f; text-align: center; margin-top: 10px; text-decoration: underline; font-family: monospace; cursor: pointer;">
+    <a href="/user/resendEmail" id="resendvarificationEmail" style="color: #05f89f; text-align: center; margin-top: 10px; text-decoration: underline; font-family: monospace; cursor: pointer;">
       <span >Resend Email Verification</span>
     </a>
   </p>
+
+  <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
 <script>
 const eyeIcon = document.getElementById('eye-icon');
 const passwordInput = document.getElementById('password');
@@ -145,6 +147,36 @@ eyeIcon.addEventListener('click', () => {
             eyeIcon.classList.add('fa-eye');
         }
     });
+
+    const submit = document.getElementById('submit');
+    submit.addEventListener('click', () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        console.log(email, password);
+        if(!email || !password) {
+            alert("Please enter email and password");
+            return;
+        }else if (!email) {
+            alert("Please enter your email.");
+            return;
+        }
+        else if (!password) {
+            alert("Please enter your password.");
+            return;
+        }
+        axios
+            .post('/user/login', { email, password })
+            .then((res) => {
+                console.log(res);
+                alert("Login successful");
+                window.location.href = '/user/dashboard'
+            })
+            .catch((err) => {
+                alert("Internal Server Error");
+            })
+    })
+
+
 </script>
   
 </body>

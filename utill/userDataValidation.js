@@ -51,7 +51,7 @@ const sendVerificationEmail = async (email, token) => {
 
   const baseURL = process.env.APP_ENV === 'Production' ? 'https://node-mongo-express-todo-application.onrender.com' :  `http://localhost:${process.env.PORT || 8000}`;
 
-  const verificationUrl = `${baseURL}/verify-email/${token}`;
+  const verificationUrl = `${baseURL}/user/verify-email/${token}`;
 
   const mailOptions = {
     from: process.env.VERIFICATION_EMAIL,
@@ -114,7 +114,7 @@ const sendPasswordEmail = async (email) => {
   });
   const baseURL = process.env.APP_ENV === 'Production' ? 'https://node-mongo-express-todo-application.onrender.com' :  `http://localhost:${process.env.PORT || 8000}`;
 
-  const verificationUrl = `${baseURL}/newPassword`;
+  const verificationUrl = `${baseURL}/user/newPassword`;
 
   const mailOptions = {
     from: process.env.VERIFICATION_EMAIL,

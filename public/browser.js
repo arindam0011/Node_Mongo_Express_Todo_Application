@@ -19,7 +19,7 @@ const LIMIT = 7;
 let loadPages = true;
 function getAndRenderAllTodos() {
     axios
-        .get(`/get-todo?skip=${SKIP}`)
+        .get(`/todo/get-todo?skip=${SKIP}`)
         .then((res) => {
             const todos = res.data.data;
             todoList = todos;
@@ -63,7 +63,7 @@ function getAndRenderAllTodos() {
 
 function getDP() {
     axios
-        .get('/get-userDP')
+        .get('/user/get-userDP')
         .then((res) => {
             console.log(res.data.data.img);
             if (res.status === 200 && res.data.data.img !== 'undefined') {
@@ -107,7 +107,7 @@ document.addEventListener('click', function (e) {
         const todoId = e.target.getAttribute('data-id');
 
         axios
-            .post('/delete-todo', { todoId })
+            .post('/todo/delete-todo', { todoId })
             .then((res) => {
                 if (res.status === 200) {
                     alert('Todo deleted!');
@@ -154,7 +154,7 @@ document.addEventListener('click', function (e) {
             console.log({ todoId, newTodo, todoStatusValue });
 
             axios
-                .post('/edit-todo', { todoId, newTodo, todoStatusValue })
+                .post('/todo/edit-todo', { todoId, newTodo, todoStatusValue })
                 .then((res) => {
                     if (res.status === 200) {
                         e.target.remove();
@@ -189,7 +189,7 @@ document.addEventListener('click', function (e) {
         loadPages = true;
 
         axios
-            .post('/create-todo', { newTodo: task.value })
+            .post('/todo/create-todo', { newTodo: task.value })
             .then((res) => {
                 if (res.status === 200) {
                     alert('Todo added!');
@@ -203,10 +203,10 @@ document.addEventListener('click', function (e) {
     }
     else if (e.target.id === 'logout' || e.target.id === 'logoutIcon') {
         axios
-            .post('/logout')
+            .post('/user/logout')
             .then((res) => {
                 alert('Logged Out Successfully!');
-                window.location.href = '/login';
+                window.location.href = '/user/login';
             })
             .catch((err) => {
                 alert(err.message);
@@ -215,10 +215,10 @@ document.addEventListener('click', function (e) {
     }
     else if (e.target.id === 'logoutAll' || e.target.id === 'logoutAllIcon') {
         axios
-            .post('/logoutAll')
+            .post('/user/logoutAll')
             .then((res) => {
                 alert('Logged Out from all devices Successfully!');
-                window.location.href = '/login';
+                window.location.href = '/user/login';
             })
             .catch((err) => {
                 alert(err.message);
@@ -277,7 +277,7 @@ document.addEventListener('click', function (e) {
             if (file) {
                 formData.append('profilePic', file);
 
-                axios.post('/uploadDP', formData, {
+                axios.post('/user/uploadDP', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -295,14 +295,14 @@ document.addEventListener('click', function (e) {
         })
     }
     else if (e.target.id === 'changePassword') {
-        window.location.href = '/newPassword';
+        window.location.href = '/user/newPassword';
     }
     else if (e.target.id === 'deleteAccount') {
         axios
-            .post('/delete-user')
+            .post('/user/delete-user')
             .then((res) => {
                 alert("Account deleted");
-                window.location.href = '/login';
+                window.location.href = '/user/login';
             })
             .catch((err) => {
                 alert(err.message);
@@ -349,7 +349,7 @@ document.addEventListener('change', function (e) {
         }
 
         axios
-            .post('/edit-todo', { todoId, newTodo, todoStatusValue })
+            .post('/todo/edit-todo', { todoId, newTodo, todoStatusValue })
             .then((res) => {
                 if (res.status === 200) {
 
@@ -366,7 +366,7 @@ document.addEventListener('change', function (e) {
 
 function getTodos(SKIP) {
     axios
-        .get(`/get-todo?skip=${SKIP}`)
+        .get(`/todo/get-todo?skip=${SKIP}`)
         .then((res) => {
             const todos = res.data.data;
             todoList = todos;
@@ -410,9 +410,10 @@ const pages = document.getElementById('Page');
 
 function renderPageNumbers() {
     axios
-        .get('/total-todo-count')
+        .get('/todo/total-todo-count')
         .then((res) => {
             let totalTodoCount = res.data.count || 1;
+            
             const totalPages = Math.ceil(totalTodoCount / LIMIT);
 
             for (let i = 1; i <= totalPages; i++) {
@@ -446,7 +447,7 @@ const email = document.getElementById('email');
 
 function renderUser() {
     axios
-        .get('/get-user')
+        .get('/user/get-user')
         .then((res) => {
             console.log(res.data.data.name);
             user.textContent = res.data.data.name;
