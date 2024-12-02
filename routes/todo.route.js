@@ -10,19 +10,20 @@ const {
 } = require("../controllers/todo.controlles.js");
 
 
-
-todoRouter.post('/create-todo', isUserAuth, createTodo);
+// Create Todo
+todoRouter.post('/create-todo', isUserAuth, createTodo); // post:: /todo/create-todo
 
 // Get Todo
-todoRouter.get('/get-todo', isUserAuth, getTodo);
+todoRouter.get('/get-todo', isUserAuth, getTodo); // get:: /todo/get-todo
 
 // Update Todo
-todoRouter.post('/edit-todo', isUserAuth, updateTodo)
+todoRouter.post('/edit-todo', isUserAuth, updateTodo) // post:: /todo/edit-todo
 
 // Delete Todo
-todoRouter.post('/delete-todo', isUserAuth, deleteTodo)
+todoRouter.post('/delete-todo', isUserAuth, deleteTodo) // post:: /todo/delete-todo
 
-todoRouter.get('/total-todo-count', isUserAuth, todoCount)
+// todo count
+todoRouter.get('/total-todo-count', isUserAuth, todoCount) // get:: /todo/total-todo-count
 
 
 

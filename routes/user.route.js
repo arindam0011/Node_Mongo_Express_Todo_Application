@@ -37,13 +37,13 @@ userRouter.post("/registration", registration)
 userRouter.get("/verify-email/:token", varifyEmailToken);
 
 // login page render
-userRouter.get("/login", renderLoginPage)
+userRouter.get("/login", renderLoginPage) // get:: /user/login
 
-// login
-userRouter.post("/login", login)
+// user login
+userRouter.post("/login", login) // post:: /user/login
 
 // render change password page
-userRouter.get("/Changepassword", rederChangePasswordPage)
+userRouter.get("/Changepassword", rederChangePasswordPage) // get:: /user/Changepassword
 
 // email page render
 userRouter.get("/resendEmail", renderEmailpage)
@@ -66,25 +66,25 @@ userRouter.post("/New-Password", setNewPassword)
 
 
 // Dashboard
-userRouter.get("/dashboard", isUserAuth, renderDashboard)
+userRouter.get("/dashboard", isUserAuth, renderDashboard) // get:: /user/dashboard
 
 // logout
-userRouter.post("/logout", isUserAuth, logout)
+userRouter.post("/logout", isUserAuth, logout) // post:: /user/logout
 
 // logout all
-userRouter.post("/logoutAll", isUserAuth, logoutFromAlldevices);
+userRouter.post("/logoutAll", isUserAuth, logoutFromAlldevices); // post:: /user/logout
 
 // get user
-userRouter.get('/get-user', isUserAuth, getUser);
+userRouter.get('/get-user', isUserAuth, getUser); // get:: /user/get-user
 
 // upload DP
-userRouter.post('/uploadDP', isUserAuth, uploadDp);
+userRouter.post('/uploadDP', isUserAuth, uploadDp); // post:: /user/uploadDP
 
 // get DP
-userRouter.get('/get-userDP', isUserAuth, getDP);
+userRouter.get('/get-userDP', isUserAuth, getDP); // get:: /user/get-userDP
 
 // delete user
-userRouter.post('/delete-user', isUserAuth, deleteUser);
+userRouter.post('/delete-user', isUserAuth, deleteUser); // post:: /user/delete-user
 
 module.exports = userRouter;
 

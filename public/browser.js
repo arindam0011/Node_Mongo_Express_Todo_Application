@@ -13,8 +13,10 @@ document.getElementById('dropdownButton').addEventListener('click', function (e)
 
 const taskList = document.getElementById('taskList');
 let todoList = [];
+let totalTodoCount = 0;
+
 let SKIP = 0;
-const LIMIT = 7;
+const LIMIT = 6;
 
 let loadPages = true;
 function getAndRenderAllTodos() {
@@ -23,7 +25,7 @@ function getAndRenderAllTodos() {
         .then((res) => {
             const todos = res.data.data;
             todoList = todos;
-            console.log(todos);
+            
             if (res.status !== 200) {
                 alert('No Todo Found!');
                 return;
@@ -65,7 +67,6 @@ function getDP() {
     axios
         .get('/user/get-userDP')
         .then((res) => {
-            console.log(res.data.data.img);
             if (res.status === 200 && res.data.data.img !== 'undefined') {
                 const img = res.data.data.img || 'https://i.imgur.com/37OLBtw.png';
 
@@ -85,7 +86,6 @@ window.onload = getAndRenderAllTodos;
 const addColor = function () {
     let TodoStatus = Array.from(document.querySelectorAll('.status-dropdown'));
 
-    console.log(TodoStatus);
     TodoStatus.forEach((item) => {
         if (item.value === 'Done!') {
             item.classList.add('text-green-500');
@@ -151,7 +151,6 @@ document.addEventListener('click', function (e) {
         saveBtn.addEventListener('click', (e) => {
             const newTodo = todoText.textContent;
             const todoStatusValue = todoStatus.value;
-            console.log({ todoId, newTodo, todoStatusValue });
 
             axios
                 .post('/todo/edit-todo', { todoId, newTodo, todoStatusValue })
@@ -231,6 +230,14 @@ document.addEventListener('click', function (e) {
             SKIP -= newLength;
             getTodos(SKIP)
         }
+        else if(SKIP === 0 ){
+            alert('No more todos!');
+        }
+        else if(SKIP > 0){
+            SKIP -= newLength;
+            getTodos(SKIP)
+        }
+        
 
         const page = document.getElementById('Page');
         // Scroll left by a specific amount (e.g., 100 pixels)
@@ -243,14 +250,13 @@ document.addEventListener('click', function (e) {
     }
     else if (e.target.id === 'Next' || e.target.id === 'NextIcon') {
 
-        if (todoList.length === LIMIT) {
+        if (todoList.length === LIMIT && SKIP < totalTodoCount-LIMIT) {
             SKIP += todoList.length;
             getTodos(SKIP);
         }
-        else {
-            alert('No more todos!');
-        }
+       
         const page = document.getElementById('Page');
+
         // Scroll right by a specific amount (e.g., 100 pixels)
         page.scrollBy({
             top: 0,
@@ -271,8 +277,6 @@ document.addEventListener('click', function (e) {
         fileInput.addEventListener('change', function (e) {
             const formData = new FormData();
             const file = e.target.files[0];
-
-            console.log(formData, file);
 
             if (file) {
                 formData.append('profilePic', file);
@@ -334,8 +338,7 @@ document.addEventListener('change', function (e) {
         const todo = e.target.parentElement.parentElement;
         const newTodo = todo.querySelector('.todo-text').textContent;
         const todoStatusValue = e.target.value;
-        console.log({ todoId, newTodo, todoStatusValue });
-
+        
 
         e.target.classList.remove('text-green-500', 'text-yellow-500', 'text-red-500');
 
@@ -370,7 +373,6 @@ function getTodos(SKIP) {
         .then((res) => {
             const todos = res.data.data;
             todoList = todos;
-            console.log(todos, res.status);
             if (res.status !== 200 || todos.length === 0) {
                 alert('No Todo Found!');
                 return;
@@ -412,8 +414,8 @@ function renderPageNumbers() {
     axios
         .get('/todo/total-todo-count')
         .then((res) => {
-            let totalTodoCount = res.data.count || 1;
-            
+         totalTodoCount = res.data.count || 1;
+
             const totalPages = Math.ceil(totalTodoCount / LIMIT);
 
             for (let i = 1; i <= totalPages; i++) {
@@ -449,7 +451,6 @@ function renderUser() {
     axios
         .get('/user/get-user')
         .then((res) => {
-            console.log(res.data.data.name);
             user.textContent = res.data.data.name;
             email.textContent = res.data.data.email;
         })
@@ -462,4 +463,5 @@ function renderUser() {
 if (!user.textContent || user.textContent === '') {
     renderUser();
 }
+
 
