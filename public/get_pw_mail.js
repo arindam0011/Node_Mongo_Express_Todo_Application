@@ -11,10 +11,15 @@ PasswordBtn.addEventListener("click", () => {
     axios
         .post("/user/password-link", { email })
         .then((res) => {
-            alert( res.data.message + "!! Check your email for password!!" || "Check your email for password!!");
-            window.location.href = '/user/login'
+            if(res.data.status===200) {
+                alert( res.data.message);
+                window.location.href = '/user/login'
+            }
+            else {
+                alert(res.data.message);
+            }
         })
         .catch((err) => {
-            alert("Internal Server Error"); 
+            alert(err.message); 
         })
     })

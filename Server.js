@@ -30,7 +30,8 @@ app.use(session({
 app.use(express.static("public"));
 
 app.use(cors({
-    origin: 'https://node-mongo-express-todo-application.onrender.com', // replace with your actual frontend domain
+    origin: 'https://node-mongo-express-todo-application.onrender.com', 
+    // origin: 'http://localhost:8000',
     methods: 'GET,POST,PUT,PATCH,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
   }));

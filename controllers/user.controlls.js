@@ -32,13 +32,17 @@ const renderRegistrationPage = (req, res) => {
 // user registration
 const registration = async (req, res) => {
     const { name, email, username, password } = req.body;
-
+     
+    console.log(req.body);
     // validation
     try {
         await userDataValidation({ name, email, username, password });
 
     } catch (error) {
-        return res.status(400).send({ message: error.message });
+        return res.send({ 
+            status: 400,
+            message: error.message 
+        });
     }
 
 
@@ -92,11 +96,14 @@ const renderLoginPage = (req, res) => {
 
 // user login
 const login= async (req, res) => {
-
+    console.log(req.body);
     const { loginId, password } = req.body;
+
+    console.log("Login Id : ", loginId, "Password : ", password);    
    
     try {
         let user;
+      
         if (validateEmail(loginId)) {
             user = await UserModel.findOne({ email: loginId });
         }
@@ -104,25 +111,17 @@ const login= async (req, res) => {
             user = await UserModel.findOne({ username: loginId });
         }
 
+        console.log("Login User : ", user);
         if (!user) {
-            return res.send({
-                status: 404,
-                message: "User not found"
-            });
+            return res.send({ status: 401, message: "User Not Found" });
         }
 
-        if (!user.isEmailVerify) {
-            return res.send({
-                status: 404,
-                message: "Please verify your email"
-            });
+        else if (!user.isEmailVerify) {
+           return res.send({ status: 401, message: "Please Verify Your Email" });
         }
 
-        if (user && !bcrypt.compareSync(password, user.password)) {
-            return res.send({
-                status: 404,
-                message: "Incorrect Password"
-            });
+        else if (user && !bcrypt.compareSync(password, user.password)) {
+           return res.send({ status: 401, message: "Incorrect Password" });
         }
 
         req.session.isAuth = true;
@@ -132,7 +131,11 @@ const login= async (req, res) => {
             username: user.username
         }
 
-        return res.redirect("/user/dashboard");
+        return  res.send({
+            status: 200,
+            message: "Login Successfully",
+            data: user
+        });
 
     } catch (error) {
         return res.send({ status: 500, message: error.message });
@@ -209,15 +212,24 @@ const renderNewPasswordPage = (req, res) => {
 
 const resendVerificationEmail = async (req, res) => {
     const email = req.body.email; // Use req.query for GET parameters
+    console.log(email)
 
     if (!email) {
         return res.status(400).send('Email is required.');
     }
-
     try {
+         if(!validateEmail(email)){
+            return res.send({
+                status: 400,
+                message: "Invalid Email"
+            })
+         }
         const token = generateJwtToken(email);
         await sendVerificationEmail(email, token); // Ensure this function handles errors
-        return res.redirect("/user/login");
+        return res.send({
+            status: 200,
+            message: 'Verification email sent successfully.'
+        });
     } catch (error) {
         console.error(error);
         return res.status(500).send('Internal Server Error.');
@@ -238,7 +250,15 @@ const varifyEmailToken = async (req, res) => {
 const sendPasswordChangeLinkToEmail = async (req, res) => {
 
     const email = req.body.email;
-    const userDB = await UserModel.findOne({ email: email });
+    console.log(email)
+    try {
+        if(!validateEmail(email)){
+            return res.send({
+                status: 400,
+                message: "Invalid Email"
+            })
+         }
+        const userDB = await UserModel.findOne({ email: email });
     if (!userDB) {
         return res.send({
             status: 403,
@@ -247,7 +267,18 @@ const sendPasswordChangeLinkToEmail = async (req, res) => {
     }
     await sendPasswordEmail(email);
 
-    return res.redirect("/user/login");
+    return res.send({
+        status: 200,
+        message: "Password Change Link Sent Successfully"
+    });
+    } catch (error) {
+        return res.send({
+            status: 500,
+            message: 'Iternal Server Error',
+            error: error
+        })
+    }
+    
 }
 
 const setNewPassword =async (req, res) => {

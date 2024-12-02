@@ -163,8 +163,13 @@
           password
         })
         .then((res) => {
-          alert(res.data.message);
-          window.location.href = '/user/login'
+          if (res.data.status === 201) { 
+            alert(res.data.message);
+            window.location.href = '/user/login'
+          }
+          else {
+            alert(res.data.message);
+          }
         })
         .catch((err) => {
           alert("Internal Server Error");

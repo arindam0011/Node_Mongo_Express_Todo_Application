@@ -20,14 +20,18 @@ changePwBtn.addEventListener('click', () => {
         alert("Password must be at least 8 characters long.");
         return;
     }
-    
+
     console.log(email, password);
     axios
         .post("/user/New-Password", { email, password })
         .then((res) => {
-            console.log(res);
-            alert(res.data.message);
-            window.location.href = '/user/login'
+            if (res.data.status === 200) {
+                alert(res.data.message);
+                window.location.href = '/user/login'
+            }
+            else {
+                alert(res.data.message);
+            }
         })
         .catch((err) => {
             console.log(err);

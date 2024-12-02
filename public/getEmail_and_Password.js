@@ -13,8 +13,14 @@ ResendBtn.addEventListener("click", () => {
     axios
         .post("/user/resend-verification-email", {email })
         .then((res) => {
-            alert("Verification email sent");
-            window.location.href = '/user/login'
+            if(res.data.status===200) {
+                alert(res.data.message);
+                window.location.href = '/user/login'
+            }
+            else {
+                alert(res.data.message);
+            }
+            
         })
         .catch((err) => {
             alert("Internal Server Error"); 

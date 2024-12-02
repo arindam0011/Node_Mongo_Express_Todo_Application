@@ -28,11 +28,14 @@ const {
 
 // get register page
 userRouter.get("/registration", renderRegistrationPage);
+
+
 // registration
 userRouter.post("/registration", registration)
 
 // verify email
 userRouter.get("/verify-email/:token", varifyEmailToken);
+
 // login page render
 userRouter.get("/login", renderLoginPage)
 
@@ -44,15 +47,24 @@ userRouter.get("/Changepassword", rederChangePasswordPage)
 
 // email page render
 userRouter.get("/resendEmail", renderEmailpage)
+
+
 // get new password page
 userRouter.get("/newPassword", renderNewPasswordPage)
+
+
 // resend verification email
 userRouter.post("/resend-verification-email", resendVerificationEmail);
+
+
 // send Password to email
 userRouter.post("/password-link", sendPasswordChangeLinkToEmail);
-// change password
 
+
+// change password
 userRouter.post("/New-Password", setNewPassword)
+
+
 // Dashboard
 userRouter.get("/dashboard", isUserAuth, renderDashboard)
 
