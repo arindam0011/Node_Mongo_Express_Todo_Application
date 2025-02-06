@@ -25,7 +25,7 @@ function getAndRenderAllTodos() {
         .then((res) => {
             const todos = res.data.data;
             todoList = todos;
-            
+
             if (res.status !== 200) {
                 alert('No Todo Found!');
                 return;
@@ -230,14 +230,14 @@ document.addEventListener('click', function (e) {
             SKIP -= newLength;
             getTodos(SKIP)
         }
-        else if(SKIP === 0 ){
+        else if (SKIP === 0) {
             alert('No more todos!');
         }
-        else if(SKIP > 0){
+        else if (SKIP > 0) {
             SKIP -= newLength;
             getTodos(SKIP)
         }
-        
+
 
         const page = document.getElementById('Page');
         // Scroll left by a specific amount (e.g., 100 pixels)
@@ -250,11 +250,11 @@ document.addEventListener('click', function (e) {
     }
     else if (e.target.id === 'Next' || e.target.id === 'NextIcon') {
 
-        if (todoList.length === LIMIT && SKIP < totalTodoCount-LIMIT) {
+        if (todoList.length === LIMIT && SKIP < totalTodoCount - LIMIT) {
             SKIP += todoList.length;
             getTodos(SKIP);
         }
-       
+
         const page = document.getElementById('Page');
 
         // Scroll right by a specific amount (e.g., 100 pixels)
@@ -323,8 +323,8 @@ document.addEventListener('click', function (e) {
 
         const isSmallScreen = window.matchMedia('(max-width: 500px)').matches;
         if (isSmallScreen) {
-                dropdownIcon.style.color = 'black';
-                dropdownIcon.style.backgroundColor = 'white';
+            dropdownIcon.style.color = 'black';
+            dropdownIcon.style.backgroundColor = 'white';
         }
     }
 })
@@ -338,7 +338,7 @@ document.addEventListener('change', function (e) {
         const todo = e.target.parentElement.parentElement;
         const newTodo = todo.querySelector('.todo-text').textContent;
         const todoStatusValue = e.target.value;
-        
+
 
         e.target.classList.remove('text-green-500', 'text-yellow-500', 'text-red-500');
 
@@ -414,7 +414,7 @@ function renderPageNumbers() {
     axios
         .get('/todo/total-todo-count')
         .then((res) => {
-         totalTodoCount = res.data.count || 1;
+            totalTodoCount = res.data.count || 1;
 
             const totalPages = Math.ceil(totalTodoCount / LIMIT);
 

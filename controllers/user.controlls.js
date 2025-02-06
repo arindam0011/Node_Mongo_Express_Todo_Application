@@ -405,6 +405,4 @@ module.exports = {
     renderDashboard,
     uploadDp,
     getDP,
-
-
 };

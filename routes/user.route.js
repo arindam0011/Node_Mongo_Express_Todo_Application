@@ -21,8 +21,6 @@ const {
     renderDashboard,
     uploadDp,
     getDP,
-
-
  } = require("../controllers/user.controlls.js");
 
 
